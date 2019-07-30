@@ -8,6 +8,7 @@ import { DnDComponent } from './dn-d/dn-d.component';
 import { OtherOperatorsComponent } from './other-operators/other-operators.component';
 import { PigLatinComponent } from './pig-latin/pig-latin.component';
 import { MosaicComponent } from './mosaic/mosaic.component';
+import { TypeAheadComponent } from './type-ahead/type-ahead.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { MosaicComponent } from './mosaic/mosaic.component';
     DnDComponent,
     OtherOperatorsComponent,
     PigLatinComponent,
-    MosaicComponent
+    MosaicComponent,
+    TypeAheadComponent
   ],
   imports: [
     BrowserModule,

@@ -5,12 +5,14 @@ import { DnDComponent } from './dn-d/dn-d.component';
 import { OtherOperatorsComponent } from './other-operators/other-operators.component';
 import { PigLatinComponent } from './pig-latin/pig-latin.component';
 import { MosaicComponent } from './mosaic/mosaic.component';
+import { TypeAheadComponent } from './type-ahead/type-ahead.component';
 
 const routes: Routes = [{path:'stopWatch', component:StopWatchComponent},
                         {path:'DnD', component:DnDComponent},
                         {path:'Other', component: OtherOperatorsComponent},
                         {path:'PigLatin', component: PigLatinComponent},
-                        {path:'mosaic', component: MosaicComponent}];
+                        {path:'mosaic', component: MosaicComponent},
+                        {path:'typeAhead', component: TypeAheadComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
