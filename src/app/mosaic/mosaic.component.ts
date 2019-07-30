@@ -19,7 +19,6 @@ export class MosaicComponent implements OnInit {
     canvas.width = 450;
     canvas.height = 540;
     let ctx = canvas.getContext('2d');
-    let coords = { x: 45, y: 54 };
     //http-server based version
     const endPoint = "http://localhost:3000/mosaic";
     ajax.getJSON(endPoint).pipe(
@@ -31,13 +30,47 @@ export class MosaicComponent implements OnInit {
                                ).subscribe(x=>console.log(x));
     //static version
     //check angular.json an assets
-
+    const staticEndPointPrefix = "http://localhost:4200/assets/coverpart-";
+    let rqsts = [];
+    for (let i:number=0; i<=9; i++){
+      for (let j:number=0; j<=9; j++){
+        let newEndPoint = `${staticEndPointPrefix}${i}-${j}.png`;
+        let r$ = ajax({
+          url: newEndPoint,
+          responseType : 'blob'
+        }).pipe(
+                  map(r=>{
+                            return { x:i, y:j, blob:r.response }
+                         })
+               )//.subscribe(r=>{ console.log(`${r.x}-${r.y}`) });
+        rqsts.push(r$);
+      }
+    }
+    /*
+    merge(...rqsts).subscribe(
+            (val) => { this.drawToPage(val.blob,val.x,val.y,ctx); },
+            err => alert(err)
+    );*/
+    /* alternative way....*/
+    for (let r$ of rqsts){
+      r$.subscribe({
+                      next: (r)=>{
+                                   this.drawToPage(r.blob,r.x,r.y,ctx);
+                                 },
+                      error: (e)=>{
+                                      console.log(e.message);
+                                  },
+                      done: ()=>{console.log('DONE!');}
+                   })
+      }
+     /**/
   }
 
   drawToPage(blob,x:number,y:number,ctx:CanvasRenderingContext2D){
+    let coords = { x: 45, y: 54 };
     let img = new Image();
     img.onload= ()=>{
-                      ctx.drawImage(img,x*x,y*x,x,y);
+                      ctx.drawImage(img,x*coords.x,y*coords.y,coords.x,coords.y);
                     }
     img.src = URL.createObjectURL(blob);
   }

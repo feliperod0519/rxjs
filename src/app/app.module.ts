@@ -9,6 +9,7 @@ import { OtherOperatorsComponent } from './other-operators/other-operators.compo
 import { PigLatinComponent } from './pig-latin/pig-latin.component';
 import { MosaicComponent } from './mosaic/mosaic.component';
 import { TypeAheadComponent } from './type-ahead/type-ahead.component';
+import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TypeAheadComponent } from './type-ahead/type-ahead.component';
     OtherOperatorsComponent,
     PigLatinComponent,
     MosaicComponent,
-    TypeAheadComponent
+    TypeAheadComponent,
+    LoadingBarComponent
   ],
   imports: [
     BrowserModule,
