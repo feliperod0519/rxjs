@@ -1,0 +1,44 @@
+{
+    "users": [{
+            "id": 1,
+            "firstName": "Felipe",
+            "lastName": "Rodriguez",
+            "email": "feliperod0519@hotmail.com"
+        },
+        {
+            "id": 2,
+            "firstName": "Carolina",
+            "lastName": "Tascon",
+            "email": "carote0519@hotmail.com"
+        },
+        {
+            "id": 3,
+            "firstName": "Manchitas",
+            "lastName": "Rodriguez",
+            "email": "manchitas@club-manchitas.ca"
+        }
+    ],
+    "companies": [{
+            "id": 1,
+            "name": "Peter Kantroupus Inc"
+        },
+        {
+            "id": 2,
+            "name": "Pako Hercelas Inc"
+        },
+        {
+            "id": 3,
+            "name": "Dee Znuts"
+        }
+    ],
+	"mosaic": [{ "x":0, "y":0, "name":"coverpart"},
+			   { "x":0, "y":1, "name":"coverpart"},
+			   { "x":0, "y":2, "name":"coverpart"},
+			   { "x":0, "y":3, "name":"coverpart"},
+			   { "x":0, "y":4, "name":"coverpart"},
+			   { "x":0, "y":5, "name":"coverpart"},
+			   { "x":0, "y":6, "name":"coverpart"},
+			   { "x":0, "y":7, "name":"coverpart"},
+			   { "x":0, "y":8, "name":"coverpart"},
+			   { "x":0, "y":9, "name":"coverpart"}]	
+}
