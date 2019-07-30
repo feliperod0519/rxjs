@@ -1,0 +1,7 @@
+#draggable {
+    cursor: move;
+    background-color: black;
+    color: white;
+    font-size: 35px;
+    position: absolute;
+  }
