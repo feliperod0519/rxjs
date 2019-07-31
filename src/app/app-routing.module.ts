@@ -7,6 +7,7 @@ import { PigLatinComponent } from './pig-latin/pig-latin.component';
 import { MosaicComponent } from './mosaic/mosaic.component';
 import { TypeAheadComponent } from './type-ahead/type-ahead.component';
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
+import { VariaOpsComponent } from './varia-ops/varia-ops.component';
 
 const routes: Routes = [{path:'stopWatch', component:StopWatchComponent},
                         {path:'DnD', component:DnDComponent},
@@ -14,7 +15,8 @@ const routes: Routes = [{path:'stopWatch', component:StopWatchComponent},
                         {path:'PigLatin', component: PigLatinComponent},
                         {path:'mosaic', component: MosaicComponent},
                         {path:'typeAhead', component: TypeAheadComponent},
-                        {path:'loadingBar', component: LoadingBarComponent}];
+                        {path:'loadingBar', component: LoadingBarComponent},
+                        {path:'variaOps', component: VariaOpsComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
