@@ -12,6 +12,7 @@ export class TypeAheadComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    let x: number = 0;
     let typeaheadInput = <HTMLElement>document.querySelector('#typeahead-input');
     let typeaheadContainer = <HTMLElement>document.querySelector('#typeahead-container');
     let usStates = ['alabama', 'alaska', 'arizona', 'arkansas', 'california', 'colorado', 'connecticut', 'delaware', 
