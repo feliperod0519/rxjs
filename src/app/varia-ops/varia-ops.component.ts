@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { of, Subject, Observable } from 'rxjs';
 import { scan, map } from 'rxjs/operators';
 import { Button } from 'protractor';
+import { CompileTemplateMetadata } from '@angular/compiler';
 
 @Component({
   selector: 'app-varia-ops',
@@ -23,6 +24,10 @@ export class VariaOpsComponent implements OnInit {
     this.subject2();
     console.log('(Subject 3)');
     this.subject3();
+    console.log('(Subject 4)');
+    //this.subject4();
+    console.log('(Observables 1)');
+    this.observable1();
   }
 
   scan1(){
@@ -99,6 +104,44 @@ export class VariaOpsComponent implements OnInit {
                                       someOtherButton.addEventListener('click',eventHandler);
                                    });
                                   */
+
+  }
+
+  subject4(){
+    let newSubject = new Subject<number>();
+    newSubject.subscribe({
+                            next: (x)=> console.log(`A:${x}`)
+                         });
+    newSubject.subscribe({
+                          next: (x)=> console.log(`B:${x}`)
+                         });
+    newSubject.next(1);
+    newSubject.next(2);
+
+    let obsTest$= Observable.create((x$)=>{
+                                              x$.next(y=>{ console.log(`B:${y}`) });
+                                          });
+    obsTest$.subscribe(1);
+    //obsTest$.subscribe(console.log);                                
+  }
+
+  observable1(){
+    const obs = new Observable(subs=>{
+                                        subs.next(1);
+                                        subs.next(2);
+                                        subs.next(3);
+                                        setTimeout(()=>{
+                                                          subs.next(4);
+                                                          subs.complete();
+                                                       },1000);
+                                     });
+    console.log('before');
+    obs.subscribe({
+                    next(x){console.log(x);},
+                    error(e){console.log(e.message);},
+                    complete(){console.log('Finish');}
+                  });
+    console.log('end!');
   }
 
   /*
@@ -113,6 +156,32 @@ const clicks = new Observable(observer => {
   return () => button.removeEventListener('click', handler);
 });
 
+
+import { Subject } from 'rxjs';
+ 
+const subject = new Subject<number>();
+ 
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`)
+});
+subject.subscribe({
+  next: (v) => console.log(`observerB: ${v}`)
+});
+ 
+subject.next(1);
+subject.next(2);
+ 
+// Logs:
+// observerA: 1
+// observerB: 1
+// observerA: 2
+// observerB: 2
+
+
+
+const myObs$ = Observable.create((i$)=>{
+                                              i$.next(Math.random());
+                                            });
   */
 }
 
