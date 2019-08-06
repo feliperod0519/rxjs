@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { of, Subject, Observable } from 'rxjs';
-import { scan, map } from 'rxjs/operators';
+import { of, Subject, Observable, from, interval, BehaviorSubject } from 'rxjs';
+import { scan, map, multicast } from 'rxjs/operators';
 import { Button } from 'protractor';
 import { CompileTemplateMetadata } from '@angular/compiler';
 
@@ -28,6 +28,16 @@ export class VariaOpsComponent implements OnInit {
     //this.subject4();
     console.log('(Observables 1)');
     this.observable1();
+    console.log('(Subject 5)');
+    this.subject5();
+    console.log('(Subject 6)');
+    this.subject6();
+    console.log('(Subject 7)');
+    this.subject7();
+    console.log('(Subject 8)');
+    this.subject8();
+    console.log('(Subject Behavoir)');
+    this.subjectBehavior();
   }
 
   scan1(){
@@ -144,6 +154,72 @@ export class VariaOpsComponent implements OnInit {
     console.log('end!');
   }
 
+  subject5(){
+    const subject = new Subject<number>();
+    subject.subscribe({
+                        next: (v)=>{ console.log(`${v}`); }
+                      });
+    subject.subscribe({
+                        next: (v)=>{ console.log(`${v}`); }
+                      });
+    subject.next(1);
+    subject.next(2);
+  }
+
+  subject6(){
+    const list = of(6,7,8,9);
+    const subject = new Subject<number>();
+    subject.subscribe({
+                        next: (i)=>{console.log(i);}
+                      });
+    list.subscribe(subject);
+  }
+
+  subject7(){
+    const source = from([1,2,3,4]);
+    const subject = new Subject<number>();
+    const multicasted = source.pipe(multicast(subject));
+    subject.subscribe({next: (i)=>{ console.log(i); }});
+    subject.subscribe({next: (i)=>{ 
+                                    let j= i*3;
+                                    console.log(j); 
+                                  }});
+    source.subscribe(subject);
+  }
+
+  subject8(){
+    const source$ = interval(1000);
+    const subject = new Subject();
+    const multicasted = source$.pipe(multicast(subject));
+    let sub1, sub2, subConn;
+    sub1 = multicasted.subscribe({
+                                    next: i=>{ console.log(`sub1: ${i}`); }
+                                 });
+    source$.subscribe(sub1);
+    setTimeout(()=>{  
+                      sub2 = multicasted.subscribe({
+                                                      next: i=>{ console.log(`sub1: ${i}`); }
+                                                  });
+                   },2000);
+
+    setTimeout(()=>{ sub1.unsubscribe(); },3000);
+  
+  }
+
+  subjectBehavior(){
+    const subject = new BehaviorSubject(0); // 0 is the initial value
+    subject.subscribe({
+                        next: (v) => console.log(`observerA: ${v}`)
+                      });
+    subject.next(1);
+    subject.next(2);
+    subject.subscribe({
+                        next: (v) => console.log(`observerB: ${v}`)
+                      });
+    subject.next(3);
+  }
+
+
   /*
 const subject = new Subject();
 button.addEventListener(‘click’, () => subject.next('click');
@@ -182,6 +258,37 @@ subject.next(2);
 const myObs$ = Observable.create((i$)=>{
                                               i$.next(Math.random());
                                             });
+
+import { Subject } from 'rxjs';
+ 
+const subject = new Subject<number>();
+ 
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`)
+});
+subject.subscribe({
+  next: (v) => console.log(`observerB: ${v}`)
+});
+ 
+subject.next(1);
+subject.next(2);
+
+
+import { Subject, from } from 'rxjs';
+ 
+const subject = new Subject<number>();
+ 
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`)
+});
+subject.subscribe({
+  next: (v) => console.log(`observerB: ${v}`)
+});
+ 
+const observable = from([1, 2, 3]);
+ 
+observable.subscribe(subject); // You can subscribe providing a Subject
+
   */
 }
 
