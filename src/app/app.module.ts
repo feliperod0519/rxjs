@@ -11,6 +11,7 @@ import { MosaicComponent } from './mosaic/mosaic.component';
 import { TypeAheadComponent } from './type-ahead/type-ahead.component';
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 import { VariaOpsComponent } from './varia-ops/varia-ops.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { VariaOpsComponent } from './varia-ops/varia-ops.component';
     MosaicComponent,
     TypeAheadComponent,
     LoadingBarComponent,
-    VariaOpsComponent
+    VariaOpsComponent,
+    SearchBarComponent
   ],
   imports: [
     BrowserModule,
