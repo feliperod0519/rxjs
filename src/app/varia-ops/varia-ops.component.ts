@@ -136,6 +136,7 @@ export class VariaOpsComponent implements OnInit {
   }
 
   observable1(){
+    
     const obs = new Observable(subs=>{
                                         subs.next(1);
                                         subs.next(2);
@@ -218,6 +219,8 @@ export class VariaOpsComponent implements OnInit {
                       });
     subject.next(3);
   }
+
+  
 
 
   /*
