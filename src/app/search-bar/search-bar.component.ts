@@ -21,6 +21,7 @@ export class SearchBarComponent implements OnInit {
     //this.MapTo2();
     //this.Merge1();
     this.Scan1();
+    this.Subject1();
   }
 
   HandleKeyUp()
@@ -99,14 +100,85 @@ export class SearchBarComponent implements OnInit {
     source$.pipe(scan((acc,curr)=>acc+curr,0)).subscribe(x=>console.log(x));
   }
 
-  Subject(){
+  Subject1(){
     const subject = new Subject();
     const asyncSubject = new AsyncSubject();
     const behaviourSubject = new BehaviorSubject('a');
-    const repalySubject = new ReplaySubject(2);
+    const replySubject = new ReplaySubject(2);
 
-    const subjects = { subject, asyncSubject, behaviourSubject, repalySubject };
+    const subjects = { subject, asyncSubject, behaviourSubject, replySubject };
+
+    console.log('subscribe1');
+    subject.subscribe(x=>console.log('s1 subject'));
+    asyncSubject.subscribe(x=>console.log('s1 asyncSubject'));
+    behaviourSubject.subscribe(x=>console.log('s1 behaviourSubject'));
+    replySubject.subscribe(x=>console.log('s1 replySubject'));
+
+    console.log('\nNEXT(r)');
+    subject.next(o=>o.next('r'))
+    console.log('\nNEXT(x)');
+    subject.next(o=>o.next('x'))
+
+    console.log('\nNEXT(r)');
+    asyncSubject.next(o=>o.next('r'))
+    console.log('\nNEXT(x)');
+    asyncSubject.next(o=>o.next('x'))
+
+    console.log('\nNEXT(r)');
+    behaviourSubject.next('r')
+    console.log('\nNEXT(x)');
+    behaviourSubject.next('x')
+
+    console.log('\nNEXT(r)');
+    replySubject.next(o=>o.next('r'))
+    console.log('\nNEXT(x)');
+    replySubject.next(o=>o.next('x'))
+
+    console.log('subscribe2');
+    subject.subscribe(x=>console.log('s2 subject'));
+    asyncSubject.subscribe(x=>console.log('s2 asyncSubject'));
+    behaviourSubject.subscribe(x=>console.log('s2 behaviourSubject'));
+    replySubject.subscribe(x=>console.log('s2 replySubject'));
+
+    console.log('\nNEXT(j)');
+    subject.next(o=>o.next('j'))
+    console.log('\nNEXT(s)');
+    subject.next(o=>o.next('s'))
 
   }
 
 }
+
+/*
+
+const log = subjectType => e => console.log(`${subjectType}: ${e}`);
+
+console.log('SUBSCRIBE 1');
+subject.subscribe(log('s1 subject'));
+asyncSubject.subscribe(log('s1 asyncSubject'));
+behaviorSubject.subscribe(log('s1 behaviorSubject'));
+replaySubject.subscribe(log('s1 replaySubject'));
+
+console.log('\nNEXT(r)');
+subjects.forEach(o => o.next('r'));
+
+console.log('\nNEXT(x)');
+subjects.forEach(o => o.next('x'));
+
+console.log('\nSUBSCRIBE 2');
+subject.subscribe(log('s2 subject'));
+asyncSubject.subscribe(log('s2 asyncSubject'));
+behaviorSubject.subscribe(log('s2 behaviorSubject'));
+replaySubject.subscribe(log('s2 replaySubject'));
+
+console.log('\nNEXT(j)');
+subjects.forEach(o => o.next('j'));
+
+console.log('\nCOMPLETE');
+subjects.forEach(o => o.complete());
+
+console.log('\nNEXT(s)');
+subjects.forEach(o => o.next('s'));
+
+
+*/
