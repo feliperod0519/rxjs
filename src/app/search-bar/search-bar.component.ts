@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { fromEvent, merge, of, interval, empty } from 'rxjs';
+import { fromEvent, merge, of, interval, empty, from } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { map, filter, distinctUntilChanged, debounceTime, tap, switchMap } from 'rxjs/operators';
 import { scan, mapTo } from 'rxjs/operators';
@@ -20,8 +20,14 @@ export class SearchBarComponent implements OnInit {
     //this.MapTo1();
     //this.MapTo2();
     //this.Merge1();
-    this.Scan1();
-    this.Subject1();
+    //this.Scan1();
+    //this.Subject1();
+    //this.Subject2();
+    //this.Subject3();
+    //this.Subject4();
+    //this.Subject5();
+    //this.Subject6();
+    this.Subject7();
   }
 
   HandleKeyUp()
@@ -147,38 +153,90 @@ export class SearchBarComponent implements OnInit {
 
   }
 
+  Subject2(){
+ 
+    const subject = new Subject<number>();
+    subject.subscribe({
+                        next: (v) => console.log(`observerA: ${v}`)
+                      });
+    subject.subscribe({
+                        next: (v) => console.log(`observerB: ${v}`)
+                      });
+    subject.next(1);
+    subject.next(2);
+  }
+
+  Subject3(){
+
+    const subject = new Subject<number>();
+    subject.subscribe({
+                        next: (v) => console.log(`observerA: ${v}`)
+                      });
+    subject.subscribe({
+                        next: (v) => console.log(`observerB: ${v}`)
+                      });
+    const observable = from([1, 2, 3]);
+    observable.subscribe(subject);
+  }
+
+  Subject4(){
+    
+    const subject = new BehaviorSubject(0); // 0 is the initial value
+    subject.subscribe({
+                        next: (v) => console.log(`observerA: ${v}`)
+                      });
+    subject.next(1);
+    subject.next(2);
+    subject.subscribe({
+                        next: (v) => console.log(`observerB: ${v}`)
+                      });
+    subject.next(3);
+  }
+
+  Subject5(){
+    const subject = new ReplaySubject(3); // buffer 3 values for new subscribers
+    subject.subscribe({
+                        next: (v) => console.log(`observerA: ${v}`)
+                      });
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    subject.next(4);
+    subject.subscribe({
+                        next: (v) => console.log(`observerB: ${v}`)
+                      });                      
+    subject.next(5)
+  }
+
+  Subject6(){
+    const subject = new ReplaySubject(100, 500 /* windowTime */);
+    subject.subscribe({
+                        next: (v) => console.log(`observerA: ${v}`)
+                      });
+    let i = 1;
+    setInterval(() => subject.next(i++), 200);
+    setTimeout(() => {
+                      subject.subscribe({
+                        next: (v) => console.log(`observerB: ${v}`)
+                      });
+                    }, 1000);
+  }
+
+  Subject7(){
+    const subject = new AsyncSubject();
+    subject.subscribe({
+                        next: (v) => console.log(`observerA: ${v}`)
+                      });
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    subject.next(4);
+    subject.complete();
+    subject.subscribe({
+                        next: (v) => console.log(`observerB: ${v}`)
+                      }); 
+    subject.next(5);
+    subject.complete();
+  }
 }
 
-/*
-
-const log = subjectType => e => console.log(`${subjectType}: ${e}`);
-
-console.log('SUBSCRIBE 1');
-subject.subscribe(log('s1 subject'));
-asyncSubject.subscribe(log('s1 asyncSubject'));
-behaviorSubject.subscribe(log('s1 behaviorSubject'));
-replaySubject.subscribe(log('s1 replaySubject'));
-
-console.log('\nNEXT(r)');
-subjects.forEach(o => o.next('r'));
-
-console.log('\nNEXT(x)');
-subjects.forEach(o => o.next('x'));
-
-console.log('\nSUBSCRIBE 2');
-subject.subscribe(log('s2 subject'));
-asyncSubject.subscribe(log('s2 asyncSubject'));
-behaviorSubject.subscribe(log('s2 behaviorSubject'));
-replaySubject.subscribe(log('s2 replaySubject'));
-
-console.log('\nNEXT(j)');
-subjects.forEach(o => o.next('j'));
-
-console.log('\nCOMPLETE');
-subjects.forEach(o => o.complete());
-
-console.log('\nNEXT(s)');
-subjects.forEach(o => o.next('s'));
-
-
-*/
