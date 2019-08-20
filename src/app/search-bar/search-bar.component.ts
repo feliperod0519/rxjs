@@ -27,7 +27,7 @@ export class SearchBarComponent implements OnInit {
     //this.Subject4();
     //this.Subject5();
     //this.Subject6();
-    this.Subject7();
+    //this.Subject7();
   }
 
   HandleKeyUp()
@@ -45,6 +45,32 @@ export class SearchBarComponent implements OnInit {
       tap(()=>loadingEl.style.display = 'block')
     ).subscribe(x=>console.log(x));
   }
+
+/*
+fromEvent<any>(searchBar, 'keyup')
+.pipe(
+  map(event => event.target.value),
+  filter(query => query.length > 3),
+  distinctUntilChanged(),
+  debounceTime(333),
+  tap(() => loadingEl.style.display = 'block'),
+  switchMap(query => ajax(endpoint + query)),
+  catchError((err, caught$) =>
+    merge(of({ err }), caught$)
+  ),
+  tap(() => loadingEl.style.display = 'none')
+)
+.subscribe(function updatePageOrErr(results: any) {
+    if (results.err) {
+      alert(results.err);
+    } else {
+      displayResults(results.response);
+    }
+  },
+  err => alert(err.message)
+);
+*/
+
 
   switchMap1()
   {
@@ -104,6 +130,19 @@ export class SearchBarComponent implements OnInit {
   Scan1(){
     const source$ = of(1,2,3);
     source$.pipe(scan((acc,curr)=>acc+curr,0)).subscribe(x=>console.log(x));
+  }
+
+  Scan2(){
+    const subject = new Subject();
+    const example = subject.pipe(
+                                  scan((acc, curr) => Object.assign({}, acc, curr), {})
+                                );
+    const subscribe = example.subscribe(val =>
+                                              console.log('Accumulated object:', val)
+                                       );
+    subject.next({ name: 'Joe' });
+    subject.next({ age: 30 });
+    subject.next({ favoriteLanguage: 'JavaScript' });
   }
 
   Subject1(){
@@ -231,7 +270,6 @@ export class SearchBarComponent implements OnInit {
     subject.next(2);
     subject.next(3);
     subject.next(4);
-    subject.complete();
     subject.subscribe({
                         next: (v) => console.log(`observerB: ${v}`)
                       }); 
