@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { fromEvent, merge, of, interval, empty, from } from 'rxjs';
+import { fromEvent, merge, of, interval, empty, from, throwError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { map, filter, distinctUntilChanged, debounceTime, tap, switchMap } from 'rxjs/operators';
-import { scan, mapTo } from 'rxjs/operators';
+import { scan, mapTo, catchError } from 'rxjs/operators';
 import { Subject, AsyncSubject, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 @Component({
@@ -15,7 +15,7 @@ export class SearchBarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    //this.HandleKeyUp();
+    this.HandleKeyUp();
     //this.switchMap1();
     //this.MapTo1();
     //this.MapTo2();
@@ -34,6 +34,7 @@ export class SearchBarComponent implements OnInit {
   {
     let searchBar = <HTMLElement>document.querySelector('input');
     let loadingEl = <HTMLElement>document.querySelector('.loader');
+    let endPoint = 'http://localhost:3000/api/advancedAsync/stackoverflow/'
     fromEvent<any>(searchBar,'keyup').pipe(
       map(event=>
                 {
@@ -42,9 +43,45 @@ export class SearchBarComponent implements OnInit {
       filter(q=>q.length>=3),
       distinctUntilChanged(),
       debounceTime(333),
-      tap(()=>loadingEl.style.display = 'block')
-    ).subscribe(x=>console.log(x));
-  }
+      tap(()=>loadingEl.style.display = 'block'),
+      switchMap(q=>ajax(endPoint + q)),
+      catchError((err, caught$) =>
+                                    merge(of({ err }), caught$)
+                ),
+      tap(() => loadingEl.style.display = 'none')
+    ).subscribe(function updatePageOrErr(results: any) {
+                        if (results.err) {
+                            alert(results.err);
+                        } 
+                        else {
+                            this.displayResults(results.response);
+                        }
+    },err => alert(err.message));
+}
+
+displayResults(results) {
+  let resultsArea = <HTMLElement>document.querySelector('.results');
+  resultsArea.innerHTML = '';
+  let listEl = document.createElement('ul');
+  results.forEach(question => {
+    let li = document.createElement('li');
+    let a = document.createElement('a');
+    a.href = question.link;
+    a.innerHTML = question.title;
+    li.appendChild(a);
+    listEl.appendChild(li);
+  });
+  resultsArea.appendChild(listEl);
+}
+
+CatchError(){
+
+    const source = throwError('This is an error!');
+    //gracefully handle error, returning observable with error message
+    const example = source.pipe(catchError(val => of(`I caught: ${val}`)));
+    //output: 'I caught: This is an error'
+    const subscribe = example.subscribe(val => console.log(val));
+}
 
 /*
 fromEvent<any>(searchBar, 'keyup')
