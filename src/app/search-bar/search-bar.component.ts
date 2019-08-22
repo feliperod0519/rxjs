@@ -15,7 +15,7 @@ export class SearchBarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.HandleKeyUp();
+    //this.HandleKeyUp();
     //this.switchMap1();
     //this.MapTo1();
     //this.MapTo2();
@@ -28,7 +28,23 @@ export class SearchBarComponent implements OnInit {
     //this.Subject5();
     //this.Subject6();
     //this.Subject7();
+    let searchBar = <HTMLElement>document.querySelector('input');
+    let loadingEl = <HTMLElement>document.querySelector('.loader');
+    let endPoint = 'http://localhost:3000/api/advancedAsync/stackoverflow/'
+    fromEvent<any>(searchBar,'keyup').pipe(
+      map(e=>e.target.value),
+      filter(x=>x.length>=3),
+      distinctUntilChanged(),
+      debounceTime(333),
+      tap(()=>loadingEl.style.display = 'block')
+    ).subscribe(x=>{
+                      let ajax$= ajax(endPoint + x);
+                      ajax$.subscribe(r=>this.testDisplayResults(r.response));
+                   });
+    
+    
   }
+
 
   HandleKeyUp()
   {
@@ -57,6 +73,21 @@ export class SearchBarComponent implements OnInit {
                             this.displayResults(results.response);
                         }
     },err => alert(err.message));
+}
+
+testDisplayResults(results){
+  let resultsArea = <HTMLElement>document.querySelector('.results');
+  resultsArea.innerHTML = '';
+  let listEl = document.createElement('ul');
+  results.forEach(q=>{
+                        let li = document.createElement('li');
+                        let a = document.createElement('a');
+                        a.href = q.link;
+                        a.innerHTML = q.title;
+                        li.appendChild(a);
+                        listEl.appendChild(li);
+                     });
+  resultsArea.appendChild(listEl);
 }
 
 displayResults(results) {
