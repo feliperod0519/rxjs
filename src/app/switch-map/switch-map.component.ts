@@ -17,9 +17,7 @@ export class SwitchMapComponent implements OnInit {
   }
 
   getStackOverflowEntries(code: string){
-      //this.stackOverflowService.get(code);
-      //let i = this.stackOverflowService.response.length;
-      console.log(this.stackOverflowService.get(code).length);
+      this.stackOverflowService.get(code).subscribe(x=>console.log(x));
   }
 
 }

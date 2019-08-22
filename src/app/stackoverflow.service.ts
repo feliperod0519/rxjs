@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ajax } from 'rxjs/ajax';
 import { stackOverflowEntry } from './shared/models/stackOverflowEntry';
-import { from, Observable } from 'rxjs';
+import { of, from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,10 @@ export class StackoverflowService {
   
   constructor() { }
 
-  response: stackOverflowEntry[] = [];
+  
 
-  get(code: string){
-    
+  get(code: string):Observable<stackOverflowEntry[]>{
+    let response: stackOverflowEntry[] = [];
     let endPoint= 'http://localhost:3000/api/advancedAsync/stackoverflow/';
     let ajax$ = ajax(endPoint + code);
     ajax$.subscribe(x=>{
@@ -22,10 +22,10 @@ export class StackoverflowService {
                                                   let newResponse: stackOverflowEntry = new stackOverflowEntry;
                                                   newResponse.link = y.link;
                                                   newResponse.text = y.title;
-                                                  this.response.push(newResponse);
+                                                  response.push(newResponse);
                                                 });
                        });
-    return this.response;
+    return of(response);
     /*
     for (let entry of response){
       console.log(entry);
@@ -33,6 +33,15 @@ export class StackoverflowService {
     */
   }
 }
+
+/*
+getHeroes(): Observable<Hero[]> {
+    // TODO: send the message _after_ fetching the heroes
+    this.messageService.add('HeroService: fetched heroes');
+    return of(HEROES);
+  }
+*/
+
 
 /*
 for (let entry of someArray) {
