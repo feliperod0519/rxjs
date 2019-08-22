@@ -12,6 +12,7 @@ import { TypeAheadComponent } from './type-ahead/type-ahead.component';
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 import { VariaOpsComponent } from './varia-ops/varia-ops.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { SwitchMapComponent } from './switch-map/switch-map.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     TypeAheadComponent,
     LoadingBarComponent,
     VariaOpsComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    SwitchMapComponent
   ],
   imports: [
     BrowserModule,
