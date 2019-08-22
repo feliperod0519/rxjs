@@ -1,4 +1,4 @@
 export class stackOverflowEntry{
-    link:string;
-    text: string;
+    public link:string;
+    public text: string;
 }
